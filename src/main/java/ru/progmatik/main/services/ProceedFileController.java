@@ -53,25 +53,12 @@ public class ProceedFileController {
                             if(FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("xml")) {
                                 String filename = FilenameUtils.getName(file.getName());
                                 proceedFiasObj(file, connection, filename.substring(0, filename.length() - 50));
-                                /*старый код
-                                String filenameShort = filename.substring(0, filename.length() - 50);
-                                if (filenameShort.equals("AS_ADDR_OBJ")) {
-                                    proceedAddrObj(file, connection);
-                                }*/
                             }
                         }
                     }
-                    if(//!sourceFile.isDirectory() &&
-                         FilenameUtils.getExtension(sourceFile.getName()).equalsIgnoreCase("xml")) {
+                    if(FilenameUtils.getExtension(sourceFile.getName()).equalsIgnoreCase("xml")) {
                         String filename = FilenameUtils.getName(sourceFile.getName());
                         proceedFiasObj(sourceFile, connection, filename.substring(0, filename.length() - 50));
-                        /*старый код
-                        if(filename.substring(0, filename.length() - 46).equals("AS_ADDR_OBJ")){
-                            proceedAddrObj(sourceFile, connection);
-                        }*/
-                        //if(filename.contains("AS_HOUSE")){
-                        //    proceedHouses(sourceFile, connection);
-                       // }
                     }
                 }
                 clearUnpackFolder();
@@ -118,18 +105,18 @@ public class ProceedFileController {
                 DAOBatchInsert.insertFiasObjArray(objectList, connection);
 
 
-                long end_nanotime = System.nanoTime();
+                /*long end_nanotime = System.nanoTime();
                 long duration = ((end_nanotime - start_nanotime) / 1000000000);
                 long diff = 0;
                 if (duration > 0) {
                     diff = totalCnt / duration;
-                }
+                }*/
 
-                logger.info(String.format("Address objects inserted: %d; Avg. speed: %d records/sec", totalCnt, diff));
+                //logger.info(String.format("Address objects inserted: %d; Avg. speed: %d records/sec", totalCnt, diff));
             }
-            logger.info("Address objects insert finished");
+            //logger.info("Address objects insert finished");
         } catch (Exception e) {
-            logger.error("proceedAddrObj error", e);
+            logger.error("proceedFiasObj error: " + shortName, e);
             e.printStackTrace();
         }
         finally {
@@ -141,42 +128,6 @@ public class ProceedFileController {
             }
         }
     }
-
-
-   /* private void proceedHouses(File sourceFile, Connection connection) {
-        long totalCnt = 0;
-
-        try(XMLFileReader xmlFileReader = new XMLFileReader(sourceFile, House.class)){
-            long start_nanotime = System.nanoTime();
-
-            // бежим по файлу и создаем объекты
-            while (xmlFileReader.hasNext()) {
-//                logger.info("House objects read started...");
-
-                List<House> houseList = xmlFileReader.readHousesFromStream(BATCH_SIZE);
-
-
-                totalCnt = totalCnt + houseList.size();
-
-                // insert into base here
-                houseDAOBatchInsert.insertHouseArray(houseList, connection);
-
-                long end_nanotime = System.nanoTime();
-                long duration = ((end_nanotime - start_nanotime) / 1000000000);
-                long diff = 0;
-                if (duration > 0) {
-                    diff = totalCnt / duration;
-                }
-
-                logger.info(String.format("House objects inserted: %d; Avg. speed: %d records/sec", totalCnt, diff));
-            }
-
-            logger.info("House objects insert finished");
-        } catch (Exception e) {
-            logger.error("proceedHouses error", e);
-            e.printStackTrace();
-        }
-    } */
 
     private boolean extractArchFile(File fiasArchFile) throws IOException, RarException {
         if(fiasArchFile == null) return false;
