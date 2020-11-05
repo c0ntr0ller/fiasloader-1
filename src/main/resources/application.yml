@@ -1,0 +1,58 @@
+#config:
+#  crontime: 0 * * * * ?
+#
+#mail: bek@prog-matik.ru
+
+#spring:
+#    jpa:
+#        hibernate:
+#            ddl-auto: create
+#        properties:
+#                jdbc:
+#                    batch_size:1000
+#    datasource:
+#        driver: org.postgresql.Driver
+#        url:  jdbc:postgresql:gistimer?stringtype=unspecified
+#        username: postgres
+#        password: 222
+
+# FIREBIRD DB SETTINGS
+#driver: org.firebirdsql.jdbc.FBDriver
+#3databaseurl: jdbc:firebirdsql:172.16.0.203:/opt/bases/fias_0.fdb
+#user: SYSDBA
+#password: masterkey
+#encoding: WIN1251
+
+# POSTGRESQL DATABASE SETTINGS
+driver: org.postgresql.Driver
+databaseurl: jdbc:postgresql://172.16.0.203/fias_develop?user=postgres&password=masterkey
+
+archDir: Z:\Work\Incoming\_FIASLoader\archive
+workDir: Z:\Work\Incoming\_FIASLoader\work
+
+client:
+  default-uri: https://fias.nalog.ru/WebServices/Public/GetAllDownloadFileInfo
+  ssl:
+    trust-store: classpath:jks/nalog.ru.jks
+    trust-store-password: nalog.ru-pass
+  readTimeoutMsec: 1000
+  connTimeoutMsec: 1000
+
+batch_size: 1000
+proceedperiod: 86400000
+downloadperiod: 86400000
+
+#house_query: INSERT INTO public.house0(houseid, aoguid, buildnum, houseguid, housenum, strstatus) VALUES (?::uuid, ?::uuid, ?, ?::uuid, ?, ?::integer) on conflict(houseid) do  UPDATE SET  aoguid = EXCLUDED.aoguid, buildnum = EXCLUDED.buildnum, houseguid = EXCLUDED.houseguid, housenum = EXCLUDED.housenum, strstatus = EXCLUDED.strstatus;
+#addrobj_query: INSERT INTO public.addrobj(aoguid,aoid,aolevel,citycode,currstatus,formalname,nextid,offname,operstatus,parentguid,placecode,previd,regioncode,shortname,streetcode,livestatus) VALUES (?::uuid,?::uuid,?::integer,?,?::integer,?,?::uuid,?,?::integer,?::uuid,?,?::uuid,?,?,?,?::integer) on conflict (aoid) do update set aoguid = EXCLUDED.aoguid, aolevel = EXCLUDED.aolevel, citycode = EXCLUDED.citycode, currstatus = EXCLUDED.currstatus, formalname = EXCLUDED.formalname, nextid = EXCLUDED.nextid, offname = EXCLUDED.offname, operstatus = EXCLUDED.operstatus, parentguid = EXCLUDED.parentguid, placecode = EXCLUDED.placecode, previd = EXCLUDED.previd, regioncode = EXCLUDED.regioncode, shortname = EXCLUDED.shortname, streetcode = EXCLUDED.streetcode, livestatus = EXCLUDED.livestatus;
+#house_query: update or insert into house0 (houseid, aoguid, buildnum, houseguid, housenum, strstatus, postalcode) values(?, ?, ?, ?, ?, ?, ?)matching(houseid)
+#house_query: update or insert into house0 (houseid, aoguid, buildnum, houseguid, housenum, strstatus, postalcode, statstatus, eststatus) values(?, ?, ?, ?, ?, ?, ?, ?, ?)
+#addrobj_query: update or insert into addrobj(aoguid,aoid,aolevel,citycode,currstatus,formalname,nextid,offname,operstatus,parentguid,placecode,previd,regioncode,shortname,streetcode,livestatus, plaincode, divtype)values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) matching(aoid)
+addrobj_query: insert into fias_gar.addr_obj(id, objectid, objectguid, name, typename, level, previd, nextid, updatedate, startdate, enddate, isactual, isactive)values (?,?,?::uuid,?,?,?,?,?,?::date,?::date,?::date,?,?)
+addrobjtypes_query: insert into fias_gar.addr_obj_types(id, level, name, shortname, desc, updatedate, startdate, enddate, isactive)values (?,?,?,?,?,?::date,?::date,?::date,?)
+housetypes_query: insert into fias_gar.house_types(id, name, shortname, desc, updatedate, startdate, enddate, isactive)values (?,?,?,?,?::date,?::date,?::date,?)
+house_query: insert into fias_gar.houses(id, objectid, objectguid, housenum, housetype, previd, nextid, updatedate, startdate, enddate, isactual, isactive)values (?,?,?::uuid,?,?,?,?,?::date,?::date,?::date,?,?)
+housesparams_query: insert into fias_gar.houses_params(id, objectid, typeid, value, updatedate)values (?,?,?,?,?::date)
+logging:
+  level:
+    root: info
+  file: log/application.log
