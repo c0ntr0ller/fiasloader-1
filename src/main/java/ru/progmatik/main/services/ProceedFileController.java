@@ -145,7 +145,7 @@ public class ProceedFileController {
         ZipEntry zipEntry = zis.getNextEntry();
         String nextFileName;
 
-        //тестовый коментраий
+        //тестовый коментраи
         while (zipEntry != null) {
             nextFileName = zipEntry.getName();
             if (!nextFileName.contains("Schemas")){
