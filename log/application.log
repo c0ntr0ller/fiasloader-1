@@ -1,0 +1,24 @@
+2020-11-05 14:39:24.632  INFO 3320 --- [main] ru.progmatik.main.FiasLoaderMainClass    : Starting FiasLoaderMainClass on FEDOR with PID 3320 (C:\Users\feodor\IdeaProjects\fiasloader2\build\classes\java\main started by feodor in C:\Users\feodor\IdeaProjects\fiasloader2)
+2020-11-05 14:39:24.635  INFO 3320 --- [main] ru.progmatik.main.FiasLoaderMainClass    : No active profile set, falling back to default profiles: default
+2020-11-05 14:39:24.683  INFO 3320 --- [main] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@52bf72b5: startup date [Thu Nov 05 14:39:24 NOVT 2020]; root of context hierarchy
+2020-11-05 14:39:25.334  INFO 3320 --- [main] o.s.oxm.jaxb.Jaxb2Marshaller             : Creating JAXBContext with context path [fias.wsdl]
+2020-11-05 14:39:25.417  INFO 3320 --- [main] o.s.ws.soap.saaj.SaajSoapMessageFactory  : Creating SAAJ 1.3 MessageFactory with SOAP 1.1 Protocol
+2020-11-05 14:39:25.811  INFO 3320 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2020-11-05 14:39:25.823  INFO 3320 --- [main] s.a.ScheduledAnnotationBeanPostProcessor : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2020-11-05 14:39:25.833  INFO 3320 --- [pool-1-thread-1] ru.progmatik.main.webclient.FiasClient   : Requesting FIAS files list
+2020-11-05 14:39:25.838  INFO 3320 --- [main] ru.progmatik.main.FiasLoaderMainClass    : Started FiasLoaderMainClass in 1.835 seconds (JVM running for 2.209)
+2020-11-05 14:39:26.816  INFO 3320 --- [pool-1-thread-1] r.p.main.services.DownloadFilesSheduler  : Arch and Work empty, downloading full file
+2020-11-05 14:39:26.817  INFO 3320 --- [pool-1-thread-1] r.p.main.services.DownloadFilesSheduler  : Start downloading 1 file(s)
+2020-11-05 14:39:26.819  INFO 3320 --- [pool-1-thread-1] r.p.main.services.DownloadFilesSheduler  : Download file tmp\20201103.zip ...
+2020-11-05 14:40:59.847  INFO 3624 --- [main] ru.progmatik.main.FiasLoaderMainClass    : Starting FiasLoaderMainClass on FEDOR with PID 3624 (C:\Users\feodor\IdeaProjects\fiasloader2\build\classes\java\main started by feodor in C:\Users\feodor\IdeaProjects\fiasloader2)
+2020-11-05 14:40:59.850  INFO 3624 --- [main] ru.progmatik.main.FiasLoaderMainClass    : No active profile set, falling back to default profiles: default
+2020-11-05 14:40:59.896  INFO 3624 --- [main] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@52bf72b5: startup date [Thu Nov 05 14:40:59 NOVT 2020]; root of context hierarchy
+2020-11-05 14:41:00.531  INFO 3624 --- [main] o.s.oxm.jaxb.Jaxb2Marshaller             : Creating JAXBContext with context path [fias.wsdl]
+2020-11-05 14:41:00.592  INFO 3624 --- [main] o.s.ws.soap.saaj.SaajSoapMessageFactory  : Creating SAAJ 1.3 MessageFactory with SOAP 1.1 Protocol
+2020-11-05 14:41:01.028  INFO 3624 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2020-11-05 14:41:01.040  INFO 3624 --- [main] s.a.ScheduledAnnotationBeanPostProcessor : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2020-11-05 14:41:01.048  INFO 3624 --- [pool-1-thread-1] ru.progmatik.main.webclient.FiasClient   : Requesting FIAS files list
+2020-11-05 14:41:01.053  INFO 3624 --- [main] ru.progmatik.main.FiasLoaderMainClass    : Started FiasLoaderMainClass in 1.778 seconds (JVM running for 2.148)
+2020-11-05 14:41:02.033  INFO 3624 --- [pool-1-thread-1] r.p.main.services.DownloadFilesSheduler  : Arch and Work empty, downloading full file
+2020-11-05 14:41:02.033  INFO 3624 --- [pool-1-thread-1] r.p.main.services.DownloadFilesSheduler  : Start downloading 1 file(s)
+2020-11-05 14:41:02.036  INFO 3624 --- [pool-1-thread-1] r.p.main.services.DownloadFilesSheduler  : Download file tmp\20201103.zip ...
