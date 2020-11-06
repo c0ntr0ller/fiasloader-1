@@ -64,6 +64,11 @@ public class AddrObj extends FiasObject {
     //@Value("${addrobj_query:\"insert into fias_gar.addr_obj(id, objectid, objectguid, name, typename, level, previd, nextid, updatedate, startdate, enddate, isactual, isactive)\"}")
     private String insertStatement = "insert into fias_gar.addr_obj(id, objectid, objectguid, name, typename, level, previd, nextid, updatedate, startdate, enddate, isactual, isactive)";
 
+    private String updateStatement = "on conflict (id) do update set objectid = excluded.objectid, objectguid = excluded.objectguid, name = excluded.name, " +
+                                     "typename = excluded.typename, level = excluded.level, previd = excluded.previd, nextid = excluded.nextid, " +
+                                     "updatedate = excluded.updatedate, startdate = excluded.startdate, enddate = excluded.enddate, isactual = excluded.isactual, " +
+                                     "isactive = excluded.isactive";
+
     public BigInteger getId() {
         return id;
     }
@@ -183,7 +188,8 @@ public class AddrObj extends FiasObject {
                 this.startdate.toString() + "'::date, '" +
                 this.enddate.toString() + "'::date, " +
                 this.isactual + ", " +
-                this.isactive + ")";
+                this.isactive + ") " +
+                this.updateStatement;
         return this.insertStatement;
     }
 }

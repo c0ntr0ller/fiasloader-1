@@ -53,6 +53,11 @@ public class House extends FiasObject {
 
     private String insertStatement = "insert into fias_gar.houses(id, objectid, objectguid, housenum, housetype, previd, nextid, updatedate, startdate, enddate, isactual, isactive)";
 
+    private String updateStatement = "on conflict (id) do update set objectid = excluded.objectid, objectguid = excluded.objectguid, housenum = excluded.housenum, " +
+            "housetype = excluded.housetype, previd = excluded.previd, nextid = excluded.nextid, " +
+            "updatedate = excluded.updatedate, startdate = excluded.startdate, enddate = excluded.enddate, isactual = excluded.isactual, " +
+            "isactive = excluded.isactive";
+
     public BigInteger getId() {
         return id;
     }
@@ -164,7 +169,8 @@ public class House extends FiasObject {
                 this.startdate.toString() + "'::date, '" +
                 this.enddate.toString() + "'::date, " +
                 this.isactual + ", " +
-                this.isactive + ")";
+                this.isactive + ") " +
+                this.updateStatement;
         return this.insertStatement;
     }
 }

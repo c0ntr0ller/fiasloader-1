@@ -51,14 +51,14 @@ public class ProceedFileController {
                     if(sourceFile.isDirectory()){
                         for (File file: Objects.requireNonNull(sourceFile.listFiles())){
                             if(FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("xml")) {
-                                String filename = FilenameUtils.getName(file.getName());
-                                proceedFiasObj(file, connection, filename.substring(0, filename.length() - 50));
+                                String fileName = FilenameUtils.getName(file.getName());
+                                proceedFiasObj(file, connection, fileName);
                             }
                         }
                     }
                     if(FilenameUtils.getExtension(sourceFile.getName()).equalsIgnoreCase("xml")) {
-                        String filename = FilenameUtils.getName(sourceFile.getName());
-                        proceedFiasObj(sourceFile, connection, filename.substring(0, filename.length() - 50));
+                        String fileName = FilenameUtils.getName(sourceFile.getName());
+                        proceedFiasObj(sourceFile, connection, fileName);
                     }
                 }
                 clearUnpackFolder();
@@ -82,17 +82,19 @@ public class ProceedFileController {
     @Autowired
     DBService dbService;
 
-    private void proceedFiasObj(File sourceFile, Connection connection, String shortName){
+    private void proceedFiasObj(File sourceFile, Connection connection, String fileName){
         long totalCnt = 0;
 
         XMLFileReader xmlFileReader = null;
         try {
 
+           String shortName =  fileName.substring(0, fileName.length() - 50);
+
             FiasObjectFactory fiasObjectFactory = new FiasObjectFactory();
             Class fiasClass = fiasObjectFactory.getFiasObjectClass(shortName);
             xmlFileReader = new XMLFileReader(sourceFile, fiasClass);
 
-            long start_nanotime = System.nanoTime();
+            //long start_nanotime = System.nanoTime();
 
             // бежим по файлу и создаем объекты
             while (xmlFileReader.hasNext()) {
@@ -114,9 +116,9 @@ public class ProceedFileController {
 
                 //logger.info(String.format("Address objects inserted: %d; Avg. speed: %d records/sec", totalCnt, diff));
             }
-            //logger.info("Address objects insert finished");
+            logger.info("File " + fileName + " insert finished");
         } catch (Exception e) {
-            logger.error("proceedFiasObj error: " + shortName, e);
+            logger.error("proceedFiasObj error: " + fileName, e);
             e.printStackTrace();
         }
         finally {
@@ -153,8 +155,10 @@ public class ProceedFileController {
                 int endShortFilename = fileName.length() - 50;
                 String shortFileName = fileName.substring(0, endShortFilename);
                 if (shortFileName.equals("AS_ADDR_OBJ") || shortFileName.equals("AS_ADDR_OBJ_TYPES") || shortFileName.equals("AS_HOUSE_TYPES") ||
-                        shortFileName.equals("AS_HOUSES") || shortFileName.equals("AS_HOUSES_PARAMS") || shortFileName.equals("AS_ADDR_OBJ_DIVISION") ||
-                        shortFileName.equals("AS_ADDR_OBJ_PARAMS") || shortFileName.equals("AS_OBJECT_LEVELS") || shortFileName.equals("AS_PARAM_TYPES")) {
+                        shortFileName.equals("AS_HOUSES") || shortFileName.equals("AS_HOUSES_PARAMS") || shortFileName.equals("AS_ADM_HIERARCHY") ||
+                        shortFileName.equals("AS_MUN_HIERARCHY") || shortFileName.equals("AS_ADDR_OBJ_PARAMS") || shortFileName.equals("AS_OBJECT_LEVELS") ||
+                        shortFileName.equals("AS_PARAM_TYPES"))
+                {
                     File newFile = new File(UNPACKFOLDER + File.separator + nextFileName);
                     if (zipEntry.isDirectory()) {
                         newFile.mkdir();

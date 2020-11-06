@@ -22,8 +22,11 @@ public class FiasObjectFactory {
             case "AS_HOUSES_PARAMS":
                 fiasClass = HouseParam.class;
                 break;
-            case "AS_ADDR_OBJ_DIVISION":
-                fiasClass = AddrObjDivision.class;
+            case "AS_ADM_HIERARCHY":
+                fiasClass = AdmHierarchy.class;
+                break;
+            case "AS_MUN_HIERARCHY":
+                fiasClass = MunHierarchy.class;
                 break;
             case "AS_ADDR_OBJ_PARAMS":
                 fiasClass = AddrObjParam.class;

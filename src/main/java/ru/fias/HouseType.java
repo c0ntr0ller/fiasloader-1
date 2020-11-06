@@ -40,6 +40,10 @@ public class HouseType extends FiasObject{
 
     private String insertStatement = "insert into fias_gar.house_types(id, name, shortname, \"desc\", updatedate, startdate, enddate, isactive)";
 
+    private String updateStatement = "on conflict (id) do update set name = excluded.name, shortname = excluded.shortname, " +
+            "\"desc\" = excluded.\"desc\", updatedate = excluded.updatedate, startdate = excluded.startdate, enddate = excluded.enddate, " +
+            "isactive = excluded.isactive";
+
     public BigInteger getId() {
         return id;
     }
@@ -115,7 +119,8 @@ public class HouseType extends FiasObject{
                 this.updatedate.toString() + "'::date, '" +
                 this.startdate.toString() + "'::date, '" +
                 this.enddate.toString() + "'::date, " +
-                this.isactive + ")";
+                this.isactive + ") " +
+                this.updateStatement;
         return this.insertStatement;
     }
 }

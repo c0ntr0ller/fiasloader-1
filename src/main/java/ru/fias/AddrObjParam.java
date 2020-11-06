@@ -25,6 +25,9 @@ public class AddrObjParam extends FiasObject{
 
     private String insertStatement = "insert into fias_gar.addr_obj_params(id, objectid, typeid, value, updatedate)";
 
+    private String updateStatement = "on conflict (id) do update set objectid = excluded.objectid, typeid = excluded.typeid, value = excluded.value, " +
+            "updatedate = excluded.updatedate";
+
     public BigInteger getId() {
         return id;
     }
@@ -74,7 +77,8 @@ public class AddrObjParam extends FiasObject{
                 this.typeid + ", '" +
                 this.value + "', '" +
                 this.updatedate.toString() + "'::date "
-                + ")";
+                + ") " +
+                this.updateStatement;
         return this.insertStatement;
     }
 }

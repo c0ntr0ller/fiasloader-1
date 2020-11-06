@@ -13,7 +13,7 @@ public class ObjectLevel extends FiasObject {
     @XmlAttribute(name = "NAME", required = true)
     protected String name;
 
-    @XmlAttribute(name = "SHORTNAME", required = true)
+    @XmlAttribute(name = "SHORTNAME")
     protected String shortname;
 
     @XmlAttribute(name = "UPDATEDATE", required = true)
@@ -32,6 +32,10 @@ public class ObjectLevel extends FiasObject {
     protected boolean isactive;
 
     private String insertStatement = "insert into fias_gar.object_levels(level, name, shortname, updatedate, startdate, enddate, isactive)";
+
+    private String updateStatement = "on conflict (level) do update set name = excluded.name, shortname = excluded.shortname, " +
+            "updatedate = excluded.updatedate, " +
+            "startdate = excluded.startdate, enddate = excluded.enddate, isactive = excluded.isactive";
 
     public int getLevel() {
         return level;
@@ -103,7 +107,8 @@ public class ObjectLevel extends FiasObject {
                 this.updatedate.toString() + "'::date, '" +
                 this.startdate.toString() + "'::date, '" +
                 this.enddate.toString() + "'::date, " +
-                this.isactive + ")";
+                this.isactive + ") " +
+                this.updateStatement;
         return this.insertStatement;
     }
 }
