@@ -46,5 +46,6 @@ public class ProceedFilesSheduler {
 
             proceedFileController.proceedFiasArchFile(file);
         }
+
     }
 }

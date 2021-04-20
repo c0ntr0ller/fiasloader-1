@@ -38,7 +38,7 @@ client:
   readTimeoutMsec: 1000
   connTimeoutMsec: 1000
 
-batch_size: 1000
+batch_size: 500
 proceedperiod: 86400000
 downloadperiod: 86400000
 

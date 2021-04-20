@@ -23,7 +23,7 @@ public class DAOBatchInsert {
 
 
 
-    public void insertFiasObjArray(List<FiasObject> fiasList, Connection connection) throws IllegalAccessException, InstantiationException, ClassNotFoundException{
+    public void insertFiasObjArray(List<FiasObject> fiasList, Connection connection) throws BatchUpdateException, IllegalAccessException, InstantiationException, ClassNotFoundException{
         int count = 0;
 
         try(Statement statement = connection.createStatement()){
@@ -35,7 +35,12 @@ public class DAOBatchInsert {
                 count++;
 
                 if (count%BATCH_SIZE == 0) {
-                    statement.executeBatch();
+                    try {
+                        statement.executeBatch();
+                    }
+                    catch (BatchUpdateException e) {
+                        logger.error("Error inserting Object", e);
+                    }
                     connection.commit();
                     count = 0;
                 }

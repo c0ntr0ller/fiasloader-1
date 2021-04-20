@@ -3,9 +3,6 @@ package ru.fias;
 import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.UUID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -51,12 +48,18 @@ public class House extends FiasObject {
     @XmlAttribute(name = "ISACTIVE", required = true)
     protected int isactive;
 
-    private String insertStatement = "insert into fias_gar.houses(id, objectid, objectguid, housenum, housetype, previd, nextid, updatedate, startdate, enddate, isactual, isactive)";
+    @XmlAttribute(name = "ADDNUM1", required = true)
+    protected String addnum1;
+
+    @XmlAttribute(name = "ADDNUM2", required = true)
+    protected String addnum2;
+
+    private String insertStatement = "insert into fias_gar.houses(id, objectid, objectguid, housenum, housetype, previd, nextid, updatedate, startdate, enddate, isactual, isactive, addnum1, addnum2)";
 
     private String updateStatement = "on conflict (id) do update set objectid = excluded.objectid, objectguid = excluded.objectguid, housenum = excluded.housenum, " +
             "housetype = excluded.housetype, previd = excluded.previd, nextid = excluded.nextid, " +
             "updatedate = excluded.updatedate, startdate = excluded.startdate, enddate = excluded.enddate, isactual = excluded.isactual, " +
-            "isactive = excluded.isactive";
+            "addnum1 = excluded.addnum2, addnum2 = excluded.addnum2, isactive = excluded.isactive";
 
     public BigInteger getId() {
         return id;
@@ -90,12 +93,20 @@ public class House extends FiasObject {
         this.housenum = housenum;
     }
 
-    public BigInteger getHousetype() {
-        return housetype;
+    public String getAddnum1() {
+        return addnum1;
     }
 
-    public void setHousetype(BigInteger housetype) {
-        this.housetype = housetype;
+    public void setAddnum1(String addnum1) {
+        this.addnum1 = addnum1;
+    }
+
+    public String getAddnum2() {
+        return addnum2;
+    }
+
+    public void setAddnum2(String addnum2) {
+        this.addnum2 = addnum2;
     }
 
     public BigInteger getPrevid() {
@@ -169,7 +180,9 @@ public class House extends FiasObject {
                 this.startdate.toString() + "'::date, '" +
                 this.enddate.toString() + "'::date, " +
                 this.isactual + ", " +
-                this.isactive + ") " +
+                this.isactive + ", " +
+                this.addnum1 + ", " +
+                this.addnum2 + ") " +
                 this.updateStatement;
         return this.insertStatement;
     }

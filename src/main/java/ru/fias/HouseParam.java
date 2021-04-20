@@ -58,7 +58,11 @@ public class HouseParam extends FiasObject {
     }
 
     public String getValue() {
-        return value;
+        if (value != null) {
+            return "'" + value.replaceAll("[']", "") + "'";
+        } else {
+            return null;
+        }
     }
 
     public void setValue(String value) {
@@ -79,8 +83,8 @@ public class HouseParam extends FiasObject {
         this.insertStatement += " values (" +
                 this.id + ", " +
                 this.objectid + ", " +
-                this.typeid + ", '" +
-                this.value + "', '" +
+                this.typeid + ", " +
+                this.getValue() + ", '" +
                 this.updatedate.toString() + "'::date "
                 + ") " +
                 this.updateStatement;

@@ -38,10 +38,10 @@ public class AddrObj extends FiasObject {
     protected String level;
 
     @XmlAttribute(name = "PREVID")
-    protected BigInteger previd;
+    protected String previd;
 
     @XmlAttribute(name = "NEXTID")
-    protected BigInteger nextid;
+    protected String nextid;
 
     @XmlAttribute(name = "UPDATEDATE", required = true)
     @XmlSchemaType(name = "date")
@@ -94,7 +94,7 @@ public class AddrObj extends FiasObject {
     }
 
     public String getName() {
-        return name;
+        return name.replaceAll("[']", "");
     }
 
     public void setName(String name) {
@@ -102,7 +102,7 @@ public class AddrObj extends FiasObject {
     }
 
     public String getTypename() {
-        return typename;
+        return typename.replaceAll("[']", "");
     }
 
     public void setTypename(String typename) {
@@ -117,19 +117,34 @@ public class AddrObj extends FiasObject {
         this.level = level;
     }
 
-    public BigInteger getPrevid() {
-        return previd;
+    public String getPrevid() {
+        if (!previd.equals("0") && previd != null){
+            return previd;
+        }
+        else{
+            return "null";
+        }
     }
 
-    public void setPrevid(BigInteger previd) {
+    public void setPrevid(String previd) {
         this.previd = previd;
     }
 
-    public BigInteger getNextid() {
-        return nextid;
+    public String getNextid() {
+        if ( nextid != null){
+            if (!nextid.equals("0")){
+                return nextid;
+            }
+            else{
+                return "null";
+            }
+        }
+        else{
+            return "null";
+        }
     }
 
-    public void setNextid(BigInteger nextid) {
+    public void setNextid(String nextid) {
         this.nextid = nextid;
     }
 
@@ -179,17 +194,17 @@ public class AddrObj extends FiasObject {
                 this.id + ", " +
                 this.objectid + ", '" +
                 this.objectguid.toString() + "'::uuid, '" +
-                this.name + "', '" +
-                this.typename + "', '" +
+                this.getName() + "', '" +
+                this.getTypename() + "', '" +
                 this.level + "', " +
-                this.previd + ", " +
-                this.nextid  + ", '" +
+                this.getPrevid().toString() + ", " +
+                this.getNextid().toString()  + ", '" +
                 this.updatedate.toString() + "'::date, '" +
                 this.startdate.toString() + "'::date, '" +
                 this.enddate.toString() + "'::date, " +
                 this.isactual + ", " +
-                this.isactive + ") " +
-                this.updateStatement;
+                this.isactive + ") "
+                + this.updateStatement;
         return this.insertStatement;
     }
 }

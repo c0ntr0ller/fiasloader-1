@@ -67,7 +67,7 @@ public class AddrObjType extends FiasObject{
         }
 
         public String getName() {
-                return name;
+                return name.replaceAll("[']", "");
         }
 
         public void setName(String name) {
@@ -75,7 +75,7 @@ public class AddrObjType extends FiasObject{
         }
 
         public String getShortname() {
-                return shortname;
+                return shortname.replaceAll("[']", "");
         }
 
         public void setShortname(String shortname) {
@@ -83,7 +83,7 @@ public class AddrObjType extends FiasObject{
         }
 
         public String getDesc() {
-                return desc;
+                return desc.replaceAll("[']", "");
         }
 
         public void setDesc(String desc) {
@@ -127,9 +127,9 @@ public class AddrObjType extends FiasObject{
                 this.insertStatement += " values (" +
                         this.id + ", " +
                         this.level + ", '" +
-                        this.name + "', '" +
-                        this.shortname + "', '" +
-                        this.desc + "', '" +
+                        this.getName() + "', '" +
+                        this.getShortname() + "', '" +
+                        this.getDesc() + "', '" +
                         this.updatedate.toString() + "'::date, '" +
                         this.startdate.toString() + "'::date, '" +
                         this.enddate.toString() + "'::date, " +

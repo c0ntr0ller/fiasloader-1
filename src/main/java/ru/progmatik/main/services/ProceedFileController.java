@@ -2,6 +2,7 @@ package ru.progmatik.main.services;
 
 import com.github.junrar.exception.RarException;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +10,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.fias.*;
 import ru.progmatik.main.DAO.*;
+import ru.progmatik.main.other.ExtractArchFileThread;
 import ru.progmatik.main.other.XMLFileReader;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -47,21 +51,26 @@ public class ProceedFileController {
                 unpackSuccess = extractArchFile(fiasArchFile);
             }
             if(unpackSuccess){
+                List<Thread>list = new ArrayList<>();
                 for (File sourceFile: Objects.requireNonNull(UNPACKFOLDER.listFiles())) {
                     if(sourceFile.isDirectory()){
                         for (File file: Objects.requireNonNull(sourceFile.listFiles())){
                             if(FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("xml")) {
                                 String fileName = FilenameUtils.getName(file.getName());
                                 proceedFiasObj(file, connection, fileName);
+                                logger.info("File " + sourceFile.getName() + "/" + file.getName() + " insert finished");
                             }
                         }
                     }
-                    if(FilenameUtils.getExtension(sourceFile.getName()).equalsIgnoreCase("xml")) {
+                    else if(FilenameUtils.getExtension(sourceFile.getName()).equalsIgnoreCase("xml")) {
                         String fileName = FilenameUtils.getName(sourceFile.getName());
                         proceedFiasObj(sourceFile, connection, fileName);
+                        logger.info("File " + fileName + " insert finished");
                     }
                 }
+
                 clearUnpackFolder();
+
             }
             else{
                 logger.info("Unpack unsuccess...");
@@ -69,7 +78,11 @@ public class ProceedFileController {
             }
 
             if(fiasArchFile != null){
-                fiasArchFile.renameTo(new File(archDir + File.separatorChar + fiasArchFile.getName()));
+                if(fiasArchFile.renameTo(new File(archDir + File.separatorChar + fiasArchFile.getName()))){
+                    logger.info("file moved to archive");
+                } else {
+                    logger.error("file not moved to archive");
+                }
             }
         } catch (Exception e) {
             logger.error("proceedFiasArchFile error", e);
@@ -78,11 +91,12 @@ public class ProceedFileController {
     }
 
     @Autowired
-    DAOBatchInsert DAOBatchInsert;
-    @Autowired
     DBService dbService;
+    @Autowired
+    DAOBatchInsert DAOBatchInsert;
 
     private void proceedFiasObj(File sourceFile, Connection connection, String fileName){
+
         long totalCnt = 0;
 
         XMLFileReader xmlFileReader = null;
@@ -107,7 +121,7 @@ public class ProceedFileController {
                 DAOBatchInsert.insertFiasObjArray(objectList, connection);
 
 
-                /*long end_nanotime = System.nanoTime();
+              /*  long end_nanotime = System.nanoTime();
                 long duration = ((end_nanotime - start_nanotime) / 1000000000);
                 long diff = 0;
                 if (duration > 0) {
@@ -116,7 +130,7 @@ public class ProceedFileController {
 
                 //logger.info(String.format("Address objects inserted: %d; Avg. speed: %d records/sec", totalCnt, diff));
             }
-            logger.info("File " + fileName + " insert finished");
+           //logger.info("File " + fileName + " insert finished");
         } catch (Exception e) {
             logger.error("proceedFiasObj error: " + fileName, e);
             e.printStackTrace();
@@ -129,6 +143,7 @@ public class ProceedFileController {
                 e.printStackTrace();
             }
         }
+
     }
 
     private boolean extractArchFile(File fiasArchFile) throws IOException, RarException {
@@ -141,43 +156,37 @@ public class ProceedFileController {
         prepareUnpackFolder();
 
         logger.info("extract file" + fiasArchFile.toPath());
-
-        byte[] buffer = new byte[1024];
-        ZipInputStream zis = new ZipInputStream(new FileInputStream(fiasArchFile));
-        ZipEntry zipEntry = zis.getNextEntry();
         String nextFileName;
-
-        //тестовый коментраи
-        while (zipEntry != null) {
-            nextFileName = zipEntry.getName();
-            if (!nextFileName.contains("Schemas")){
+        ZipFile zipFile = new  ZipFile(fiasArchFile);
+        Enumeration<? extends ZipEntry> e = zipFile.entries();
+        ZipEntry entry;
+        List<Thread>list = new ArrayList<>();
+        while (e.hasMoreElements()) {
+            entry = e.nextElement();
+            nextFileName = entry.getName();
+            if (!nextFileName.contains("Schemas")) {
                 String fileName = FilenameUtils.getName(nextFileName);
                 int endShortFilename = fileName.length() - 50;
                 String shortFileName = fileName.substring(0, endShortFilename);
                 if (shortFileName.equals("AS_ADDR_OBJ") || shortFileName.equals("AS_ADDR_OBJ_TYPES") || shortFileName.equals("AS_HOUSE_TYPES") ||
                         shortFileName.equals("AS_HOUSES") || shortFileName.equals("AS_HOUSES_PARAMS") || shortFileName.equals("AS_ADM_HIERARCHY") ||
                         shortFileName.equals("AS_MUN_HIERARCHY") || shortFileName.equals("AS_ADDR_OBJ_PARAMS") || shortFileName.equals("AS_OBJECT_LEVELS") ||
-                        shortFileName.equals("AS_PARAM_TYPES"))
-                {
-                    File newFile = new File(UNPACKFOLDER + File.separator + nextFileName);
-                    if (zipEntry.isDirectory()) {
-                        newFile.mkdir();
-                    } else {
-                        new File(newFile.getParent()).mkdirs();
-                        FileOutputStream fos = new FileOutputStream(newFile);
-                        int len;
-                        while ((len = zis.read(buffer)) > 0) {
-                            fos.write(buffer, 0, len);
-                        }
-                    fos.close();
-                    }
+                        shortFileName.equals("AS_PARAM_TYPES")) {
+
+                     Thread extractThread = new Thread(new ExtractArchFileThread(entry, UNPACKFOLDER, zipFile));
+                     extractThread.start();
+                     list.add(extractThread);
                 }
             }
-            zipEntry = zis.getNextEntry();
         }
-        zis.closeEntry();
-        zis.close();
-
+        for (Thread thread : list) {
+            try {
+                thread.join();
+            }
+            catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
         logger.info(fiasArchFile.toPath() + " extracted");
 
         return true;
