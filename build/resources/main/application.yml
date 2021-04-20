@@ -29,6 +29,7 @@ databaseurl: jdbc:postgresql://172.16.0.203/fias_develop?user=postgres&password=
 
 archDir: Z:\Work\Incoming\_FIASLoader\archive
 workDir: Z:\Work\Incoming\_FIASLoader\work
+unpackDir: Z:\Work\Incoming\_FIASLoader\unpack
 
 client:
   default-uri: https://fias.nalog.ru/WebServices/Public/GetAllDownloadFileInfo
