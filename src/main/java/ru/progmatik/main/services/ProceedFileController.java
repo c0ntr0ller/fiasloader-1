@@ -2,7 +2,6 @@ package ru.progmatik.main.services;
 
 import com.github.junrar.exception.RarException;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,6 @@ import ru.progmatik.main.other.XMLFileReader;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -24,7 +21,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 
 /**
  * сервис предназначен для обработки скачанных файлов
@@ -36,8 +32,10 @@ public class ProceedFileController {
     @Value("${batchsize:1000}")
     private int BATCH_SIZE;
 
+    @Value("${unpackDir}")
+    private String unpackDir;
 
-    private static final File UNPACKFOLDER = new File("Z:\\Work\\Incoming\\_FIASLoader\\unpack");
+    private final File unpackFolder = new File(unpackDir);
 
     @Value("${archDir:archive}")
     String archDir;
@@ -52,7 +50,7 @@ public class ProceedFileController {
             }
             if(unpackSuccess){
                 List<Thread>list = new ArrayList<>();
-                for (File sourceFile: Objects.requireNonNull(UNPACKFOLDER.listFiles())) {
+                for (File sourceFile: Objects.requireNonNull(unpackFolder.listFiles())) {
                     if(sourceFile.isDirectory()){
                         for (File file: Objects.requireNonNull(sourceFile.listFiles())){
                             if(FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("xml")) {
@@ -173,7 +171,7 @@ public class ProceedFileController {
                         shortFileName.equals("AS_MUN_HIERARCHY") || shortFileName.equals("AS_ADDR_OBJ_PARAMS") || shortFileName.equals("AS_OBJECT_LEVELS") ||
                         shortFileName.equals("AS_PARAM_TYPES")) {
 
-                     Thread extractThread = new Thread(new ExtractArchFileThread(entry, UNPACKFOLDER, zipFile));
+                     Thread extractThread = new Thread(new ExtractArchFileThread(entry, unpackFolder, zipFile));
                      extractThread.start();
                      list.add(extractThread);
                 }
@@ -193,14 +191,14 @@ public class ProceedFileController {
     }
 
     private void prepareUnpackFolder() {
-        if (!UNPACKFOLDER.exists()) {
-            UNPACKFOLDER.mkdir();
+        if (!unpackFolder.exists()) {
+            unpackFolder.mkdir();
         }
 
         clearUnpackFolder();
     }
     private void clearUnpackFolder(){
-        for(File file : Objects.requireNonNull(UNPACKFOLDER.listFiles())){
+        for(File file : Objects.requireNonNull(unpackFolder.listFiles())){
             recursiveDelete(file);
         }
         logger.info("Unpack folder cleared");
