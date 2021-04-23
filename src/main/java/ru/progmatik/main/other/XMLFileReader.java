@@ -6,7 +6,6 @@ import ru.fias.FiasObject;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.UnmarshalException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.stream.XMLInputFactory;
@@ -17,7 +16,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
