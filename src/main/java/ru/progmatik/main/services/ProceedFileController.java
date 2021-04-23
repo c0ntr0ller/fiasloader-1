@@ -152,7 +152,7 @@ public class ProceedFileController {
 
         prepareUnpackFolder();
 
-        logger.info("extract file" + fiasArchFile.toPath());
+        logger.info("extract file " + fiasArchFile.toPath());
         String nextFileName;
         ZipFile zipFile = new  ZipFile(fiasArchFile);
         Enumeration<? extends ZipEntry> e = zipFile.entries();

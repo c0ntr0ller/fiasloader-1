@@ -19,25 +19,25 @@ public class FiasObjectFactory {
             case "AS_HOUSES":
                 fiasClass = House.class;
                 break;
-            case "AS_HOUSES_PARAMS":
-                fiasClass = HouseParam.class;
-                break;
+//            case "AS_HOUSES_PARAMS":
+//                fiasClass = HouseParam.class;
+//                break;
             case "AS_ADM_HIERARCHY":
                 fiasClass = AdmHierarchy.class;
                 break;
             case "AS_MUN_HIERARCHY":
                 fiasClass = MunHierarchy.class;
                 break;
-            case "AS_ADDR_OBJ_PARAMS":
-                fiasClass = AddrObjParam.class;
-                break;
+//            case "AS_ADDR_OBJ_PARAMS":
+//                fiasClass = AddrObjParam.class;
+//                break;
             case "AS_OBJECT_LEVELS":
                 fiasClass = ObjectLevel.class;
                 break;
             case "AS_PARAM_TYPES":
                 fiasClass = ParamType.class;
                 break;
-            default: throw new IllegalArgumentException("Wrong fyle name:" + XMLFileName);
+            default: throw new IllegalArgumentException("Wrong file name:" + XMLFileName);
         }
         return fiasClass;
     }
