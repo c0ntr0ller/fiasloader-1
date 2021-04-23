@@ -27,9 +27,9 @@
 driver: org.postgresql.Driver
 databaseurl: jdbc:postgresql://172.16.0.203/fias_develop?user=postgres&password=masterkey
 
-archDir: Z:\Work\Incoming\_FIASLoader\archive
-workDir: Z:\Work\Incoming\_FIASLoader\work
-unpackDir: Z:\Work\Incoming\_FIASLoader\unpack
+archDir: archive
+workDir: work
+unpackDir: unpack
 
 client:
   default-uri: https://fias.nalog.ru/WebServices/Public/GetAllDownloadFileInfo
@@ -56,4 +56,4 @@ housesparams_query: insert into fias_gar.houses_params(id, objectid, typeid, val
 logging:
   level:
     root: info
-  file: Z:\Work\Incoming\_FIASLoader\log\application.log
+  file: log\application.log

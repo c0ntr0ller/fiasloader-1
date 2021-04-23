@@ -1,18 +1,20 @@
 package ru.progmatik.main.services;
 
-import com.github.junrar.exception.RarException;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.fias.*;
-import ru.progmatik.main.DAO.*;
+import ru.fias.FiasObject;
+import ru.fias.FiasObjectFactory;
+import ru.progmatik.main.DAO.DAOBatchInsert;
+import ru.progmatik.main.DAO.DBService;
 import ru.progmatik.main.other.ExtractArchFileThread;
 import ru.progmatik.main.other.XMLFileReader;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -32,10 +34,8 @@ public class ProceedFileController {
     @Value("${batchsize:1000}")
     private int BATCH_SIZE;
 
-    @Value("${unpackDir}")
+    @Value("${unpackDir:unpack}")
     private String unpackDir;
-
-    private final File unpackFolder = new File(unpackDir);
 
     @Value("${archDir:archive}")
     String archDir;
@@ -49,8 +49,7 @@ public class ProceedFileController {
                 unpackSuccess = extractArchFile(fiasArchFile);
             }
             if(unpackSuccess){
-                List<Thread>list = new ArrayList<>();
-                for (File sourceFile: Objects.requireNonNull(unpackFolder.listFiles())) {
+                for (File sourceFile: Objects.requireNonNull(new File(unpackDir).listFiles())) {
                     if(sourceFile.isDirectory()){
                         for (File file: Objects.requireNonNull(sourceFile.listFiles())){
                             if(FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("xml")) {
@@ -144,7 +143,7 @@ public class ProceedFileController {
 
     }
 
-    private boolean extractArchFile(File fiasArchFile) throws IOException, RarException {
+    private boolean extractArchFile(File fiasArchFile) throws IOException {
         if(fiasArchFile == null) return false;
 
         if (!Files.exists(fiasArchFile.toPath())) {
@@ -171,7 +170,7 @@ public class ProceedFileController {
                         shortFileName.equals("AS_MUN_HIERARCHY") || shortFileName.equals("AS_ADDR_OBJ_PARAMS") || shortFileName.equals("AS_OBJECT_LEVELS") ||
                         shortFileName.equals("AS_PARAM_TYPES")) {
 
-                     Thread extractThread = new Thread(new ExtractArchFileThread(entry, unpackFolder, zipFile));
+                     Thread extractThread = new Thread(new ExtractArchFileThread(entry, new File(unpackDir), zipFile));
                      extractThread.start();
                      list.add(extractThread);
                 }
@@ -191,14 +190,14 @@ public class ProceedFileController {
     }
 
     private void prepareUnpackFolder() {
-        if (!unpackFolder.exists()) {
-            unpackFolder.mkdir();
+        if (!new File(unpackDir).exists()) {
+            new File(unpackDir).mkdir();
         }
 
         clearUnpackFolder();
     }
     private void clearUnpackFolder(){
-        for(File file : Objects.requireNonNull(unpackFolder.listFiles())){
+        for(File file : Objects.requireNonNull(new File(unpackDir).listFiles())){
             recursiveDelete(file);
         }
         logger.info("Unpack folder cleared");
@@ -210,7 +209,7 @@ public class ProceedFileController {
             return;
         //если это папка, то идем внутрь этой папки и вызываем рекурсивное удаление всего, что там есть
         if (file.isDirectory()) {
-            for (File f : file.listFiles()) {
+            for (File f : Objects.requireNonNull(file.listFiles())) {
                 // рекурсивный вызов
                 recursiveDelete(f);
             }

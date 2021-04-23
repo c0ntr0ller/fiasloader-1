@@ -181,8 +181,8 @@ public class House extends FiasObject {
                 this.enddate.toString() + "'::date, " +
                 this.isactual + ", " +
                 this.isactive + ", " +
-                this.addnum1 + ", " +
-                this.addnum2 + ") " +
+                "'" + this.addnum1 + "', " +
+                "'" + this.addnum2 + "') " +
                 this.updateStatement;
         return this.insertStatement;
     }
