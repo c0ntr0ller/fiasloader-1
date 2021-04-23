@@ -1,6 +1,8 @@
 /tmp/
+/archive/
 /build/
-/gradle/wrapper/
 /unpack/
 /work/
+/gradle/
 /.gradle/
+/.idea/
