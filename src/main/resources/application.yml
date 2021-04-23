@@ -56,4 +56,4 @@ housesparams_query: insert into fias_gar.houses_params(id, objectid, typeid, val
 logging:
   level:
     root: info
-  file: log\application.log
+  file: log/application.log
