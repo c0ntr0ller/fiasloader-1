@@ -37,7 +37,7 @@ public class FiasObjectFactory {
             case "AS_PARAM_TYPES":
                 fiasClass = ParamType.class;
                 break;
-            default: throw new IllegalArgumentException("Wrong file name:" + XMLFileName);
+            default:
         }
         return fiasClass;
     }

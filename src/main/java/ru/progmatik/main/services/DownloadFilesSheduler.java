@@ -81,6 +81,7 @@ public class DownloadFilesSheduler {
                 }
             } catch (IOException e) {
                 logger.error("Exception while downloading file " + url);
+                logger.error(e.getMessage());
                 e.printStackTrace();
             }
         }

@@ -103,19 +103,21 @@ public class ProceedFileController {
 
             FiasObjectFactory fiasObjectFactory = new FiasObjectFactory();
             Class fiasClass = fiasObjectFactory.getFiasObjectClass(shortName);
-            xmlFileReader = new XMLFileReader(sourceFile, fiasClass);
+            //logger.info("File " + fileName + " insert finished");
+            if (fiasClass != null) {
+                xmlFileReader = new XMLFileReader(sourceFile, fiasClass);
 
-            //long start_nanotime = System.nanoTime();
+                //long start_nanotime = System.nanoTime();
 
-            // бежим по файлу и создаем объекты
-            while (xmlFileReader.hasNext()) {
+                // бежим по файлу и создаем объекты
+                while (xmlFileReader.hasNext()) {
 //                logger.info("Address objects read started...");
 
-                List<FiasObject> objectList = xmlFileReader.readAddrObjFromStream(BATCH_SIZE);
+                    List<FiasObject> objectList = xmlFileReader.readAddrObjFromStream(BATCH_SIZE);
 
-                totalCnt = totalCnt + objectList.size();
+                    totalCnt = totalCnt + objectList.size();
 
-                DAOBatchInsert.insertFiasObjArray(objectList, connection);
+                    DAOBatchInsert.insertFiasObjArray(objectList, connection);
 
 
               /*  long end_nanotime = System.nanoTime();
@@ -125,9 +127,12 @@ public class ProceedFileController {
                     diff = totalCnt / duration;
                 }*/
 
-                //logger.info(String.format("Address objects inserted: %d; Avg. speed: %d records/sec", totalCnt, diff));
+                    //logger.info(String.format("Address objects inserted: %d; Avg. speed: %d records/sec", totalCnt, diff));
+                }
             }
-           //logger.info("File " + fileName + " insert finished");
+            else {
+                logger.info("No class found for file: " + fileName);
+            }
         } catch (Exception e) {
             logger.error("proceedFiasObj error: " + fileName, e);
             e.printStackTrace();
