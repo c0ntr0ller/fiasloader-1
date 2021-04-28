@@ -182,7 +182,7 @@ public class House extends FiasObject {
                 this.isactual + ", " +
                 this.isactive + ", " +
                 "nullif('" + this.addnum1 + "','null'), " +
-                "nullif('" + this.addnum2 + "','null'), " +
+                "nullif('" + this.addnum2 + "','null') " +
                 this.updateStatement;
         return this.insertStatement;
     }
