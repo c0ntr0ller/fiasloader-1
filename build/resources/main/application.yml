@@ -53,6 +53,9 @@ addrobjtypes_query: insert into fias_gar.addr_obj_types(id, level, name, shortna
 housetypes_query: insert into fias_gar.house_types(id, name, shortname, desc, updatedate, startdate, enddate, isactive)values (?,?,?,?,?::date,?::date,?::date,?)
 house_query: insert into fias_gar.houses(id, objectid, objectguid, housenum, housetype, previd, nextid, updatedate, startdate, enddate, isactual, isactive)values (?,?,?::uuid,?,?,?,?,?::date,?::date,?::date,?,?)
 housesparams_query: insert into fias_gar.houses_params(id, objectid, typeid, value, updatedate)values (?,?,?,?,?::date)
+apartmenttypes_query: insert into fias_gar.apartment_types(id, name, shortname, desc, updatedate, startdate, enddate, isactive)values (?,?,?,?,?::date,?::date,?::date,?)
+apartment_query: insert into fias_gar.apartments(id, objectid, objectguid, appartnum, apparttype, previd, nextid, updatedate, startdate, enddate, isactual, isactive)values (?,?,?::uuid,?,?,?,?,?::date,?::date,?::date,?,?)
+apartmentparams_query: insert into fias_gar.apartments_params(id, objectid, typeid, value, updatedate)values (?,?,?,?,?::date)
 logging:
   level:
     root: info
