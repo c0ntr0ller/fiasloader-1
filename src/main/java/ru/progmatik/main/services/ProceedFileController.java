@@ -170,9 +170,18 @@ public class ProceedFileController {
                 String fileName = FilenameUtils.getName(nextFileName);
                 int endShortFilename = fileName.length() - 50;
                 String shortFileName = fileName.substring(0, endShortFilename);
-                if (shortFileName.equals("AS_ADDR_OBJ") || shortFileName.equals("AS_ADDR_OBJ_TYPES") || shortFileName.equals("AS_HOUSE_TYPES") ||
-                        shortFileName.equals("AS_HOUSES") || shortFileName.equals("AS_HOUSES_PARAMS") || shortFileName.equals("AS_ADM_HIERARCHY") ||
-                        shortFileName.equals("AS_MUN_HIERARCHY") || shortFileName.equals("AS_ADDR_OBJ_PARAMS") || shortFileName.equals("AS_OBJECT_LEVELS") ||
+                if (shortFileName.equals("AS_ADDR_OBJ") ||
+                        shortFileName.equals("AS_ADDR_OBJ_TYPES") ||
+                        shortFileName.equals("AS_HOUSE_TYPES") ||
+                        shortFileName.equals("AS_HOUSES") ||
+                        shortFileName.equals("AS_HOUSES_PARAMS") ||
+                        shortFileName.equals("AS_APARTMENT_TYPES") ||
+                        shortFileName.equals("AS_APARTMENTS") ||
+                        shortFileName.equals("AS_APARTMENTS_PARAMS") ||
+                        shortFileName.equals("AS_ADM_HIERARCHY") ||
+                        shortFileName.equals("AS_MUN_HIERARCHY") ||
+                        shortFileName.equals("AS_ADDR_OBJ_PARAMS") ||
+                        shortFileName.equals("AS_OBJECT_LEVELS") ||
                         shortFileName.equals("AS_PARAM_TYPES")) {
 
                      Thread extractThread = new Thread(new ExtractArchFileThread(entry, new File(unpackDir), zipFile));

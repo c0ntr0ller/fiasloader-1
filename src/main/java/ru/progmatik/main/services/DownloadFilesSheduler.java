@@ -73,7 +73,7 @@ public class DownloadFilesSheduler {
             String tmpfilename =  "tmp" + File.separatorChar + versionId.toString() + ".zip";
 
             try {
-                logger.info(String.format("Download file %s ...", tmpfilename));
+                logger.info(String.format("Download url %, file %s ...", url, tmpfilename));
                 UtilClass.downLoadFileFromURL(tmpfilename, url);
                 File tmpFile = new File(tmpfilename);
                 if(tmpFile.exists()) {

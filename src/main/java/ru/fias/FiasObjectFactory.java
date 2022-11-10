@@ -22,6 +22,15 @@ public class FiasObjectFactory {
             case "AS_HOUSES_PARAMS":
                 fiasClass = HouseParam.class;
                 break;
+            case "AS_APARTMENT_TYPES":
+                fiasClass = ApartmentType.class;
+                break;
+            case "AS_APARTMENTS":
+                fiasClass = Apartment.class;
+                break;
+            case "AS_APARTMENTS_PARAMS":
+                fiasClass = ApartmentParam.class;
+                break;
             case "AS_ADM_HIERARCHY":
                 fiasClass = AdmHierarchy.class;
                 break;

@@ -11,6 +11,8 @@
       <excludeFolder url="file://$MODULE_DIR$/../../.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../build" />
       <excludeFolder url="file://$MODULE_DIR$/../../out" />
+      <excludeFolder url="file://$MODULE_DIR$/../../unpack" />
+      <excludeFolder url="file://$MODULE_DIR$/../../work" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
