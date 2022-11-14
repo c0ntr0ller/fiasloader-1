@@ -49,11 +49,13 @@ public class ProceedFileController {
                 unpackSuccess = extractArchFile(fiasArchFile);
             }
             if(unpackSuccess){
+                boolean filesIsProceed = false;
                 for (File sourceFile: Objects.requireNonNull(new File(unpackDir).listFiles())) {
                     if(sourceFile.isDirectory()){
                         for (File file: Objects.requireNonNull(sourceFile.listFiles())){
                             if(FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("xml")) {
                                 String fileName = FilenameUtils.getName(file.getName());
+                                filesIsProceed = true;
                                 proceedFiasObj(file, connection, fileName);
                                 logger.info("File " + sourceFile.getName() + "/" + file.getName() + " insert finished");
                             }
@@ -61,9 +63,14 @@ public class ProceedFileController {
                     }
                     else if(FilenameUtils.getExtension(sourceFile.getName()).equalsIgnoreCase("xml")) {
                         String fileName = FilenameUtils.getName(sourceFile.getName());
+                        filesIsProceed = true;
                         proceedFiasObj(sourceFile, connection, fileName);
                         logger.info("File " + fileName + " insert finished");
                     }
+                }
+
+                if (filesIsProceed) {
+                    logger.info("Files proceed insert finished");
                 }
 
                 clearUnpackFolder();
