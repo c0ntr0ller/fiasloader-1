@@ -80,15 +80,15 @@ public class UtilClass {
      * @return
      */
     public static Map<Integer,File> getDirFiles(String dir, String extension){
-        File root= new File(dir);
+        File rootDir= new File(dir);
 
-        if(!root.exists()){
-            root.mkdir();
+        if(!rootDir.exists()){
+            rootDir.mkdir();
         }
 
         Map<Integer,File> fileMap = new HashMap<>();
 
-        File[] files = root.listFiles();
+        File[] files = rootDir.listFiles();
         if (files == null){
             return fileMap;
         }

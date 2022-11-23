@@ -77,6 +77,7 @@ public class DownloadFilesSheduler {
                 UtilClass.downLoadFileFromURL(tmpfilename, url);
                 File tmpFile = new File(tmpfilename);
                 if(tmpFile.exists()) {
+                    logger.info(String.format("Rename file from %s to %s", tmpfilename, workDir + File.separatorChar + tmpFile.getName()));
                     tmpFile.renameTo(new File(workDir + File.separatorChar + tmpFile.getName()));
                 }
             } catch (IOException e) {

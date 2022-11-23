@@ -35,6 +35,8 @@ public class ProceedFilesSheduler {
         if(workDir == null || workDir.isEmpty()) {
             workDir = "work";
         }
+
+        logger.info(String.format("get file from directory: %s", workDir));
         Map<Integer,File> workFilesMap = UtilClass.getDirFiles(workDir, "zip");
 
         logger.info(String.format("Files for proceed to database: %d", workFilesMap.size()));
