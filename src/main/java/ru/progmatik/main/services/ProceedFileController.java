@@ -16,6 +16,8 @@ import ru.progmatik.main.other.XMLFileReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -82,7 +84,10 @@ public class ProceedFileController {
             }
 
             if(fiasArchFile != null){
-                if(fiasArchFile.renameTo(new File(archDir + File.separatorChar + fiasArchFile.getName()))){
+                Files.copy(fiasArchFile.toPath(), Paths.get(archDir + File.separatorChar + fiasArchFile.getName()), StandardCopyOption.REPLACE_EXISTING);
+
+                if(Files.exists(Paths.get(archDir + File.separatorChar + fiasArchFile.getName()))){
+                    Files.delete(fiasArchFile.toPath());
                     logger.info("file moved to archive");
                 } else {
                     logger.error("file not moved to archive");

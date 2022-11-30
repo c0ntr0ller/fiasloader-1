@@ -14,6 +14,9 @@ import ru.progmatik.main.other.UtilClass;
 import javax.xml.soap.SOAPException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -77,8 +80,15 @@ public class DownloadFilesSheduler {
                 UtilClass.downLoadFileFromURL(tmpfilename, url);
                 File tmpFile = new File(tmpfilename);
                 if(tmpFile.exists()) {
-                    logger.info(String.format("Rename file from %s to %s", tmpfilename, workDir + File.separatorChar + tmpFile.getName()));
-                    tmpFile.renameTo(new File(workDir + File.separatorChar + tmpFile.getName()));
+                    logger.info(String.format("Move file from %s to %s", tmpfilename, workDir + File.separatorChar + tmpFile.getName()));
+//                    tmpFile.renameTo(new File(workDir + File.separatorChar + tmpFile.getName()));
+                    Files.copy(tmpFile.toPath(), Paths.get(workDir + File.separatorChar + tmpFile.getName()), StandardCopyOption.REPLACE_EXISTING);
+                    if(Files.exists(Paths.get(workDir + File.separatorChar + tmpFile.getName()))){
+                        Files.delete(tmpFile.toPath());
+                        logger.info("File moved successfully, source file deleted");
+                    } else {
+                        logger.error("File not moved");
+                    }
                 }
             } catch (IOException e) {
                 logger.error("Exception while downloading file " + url);
